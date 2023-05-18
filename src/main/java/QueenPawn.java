@@ -8,8 +8,6 @@ public class QueenPawn {
     @Getter
     private int positionY;
     @Getter
-    private boolean isAttacked;
-    @Getter
     private boolean isAttacking;
 
     public QueenPawn(final int positionX,
@@ -18,9 +16,9 @@ public class QueenPawn {
         setPositionY(positionY);
     }
 
-    public QueenPawn(final int boardSize,
-                     final int positionX,
-                     final int positionY) {
+    public QueenPawn(final int positionX,
+                     final int positionY,
+                     final int boardSize) {
         try {
             BOARD_SIZE = boardSize;
             setPositionX(positionX);
@@ -42,10 +40,6 @@ public class QueenPawn {
             throw new OutOfBoundsException(BOARD_SIZE - 1, positionY);
         }
         this.positionY = positionY;
-    }
-
-    public void isBeingAttacked(final QueenPawn queenPawn) {
-        this.isAttacked = queenPawn.isAttackingPawn(this);
     }
 
     public boolean isAttackingPawn(final QueenPawn queenPawn) {
@@ -73,7 +67,6 @@ public class QueenPawn {
         int diagonalPositionY = this.positionY - minPositionValue;
 
         while ((diagonalPositionX < BOARD_SIZE) || (diagonalPositionY < BOARD_SIZE)) {
-            System.out.println(diagonalPositionX + " " + diagonalPositionY);
             if (diagonalPositionX == positionX && diagonalPositionY == positionY) {
                 return true;
             }
@@ -91,7 +84,6 @@ public class QueenPawn {
         int diagonalPositionY = this.positionY - minPositionValue;
 
         while ((diagonalPositionX < BOARD_SIZE) || (diagonalPositionY >= 0)) {
-            System.out.println(diagonalPositionX + " " + diagonalPositionY);
             if (diagonalPositionX == positionX && diagonalPositionY == positionY) {
                 return true;
             }

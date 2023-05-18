@@ -21,17 +21,26 @@ public class ChessBoard {
 
     public void setInitialPawn(final int positionX,
                                final int positionY) {
-        final QueenPawn pawn = new QueenPawn(boardSize,
-                                             positionX,
-                                             positionY);
+        if (isPositionTaken(positionX, positionY)) {
+            throw new PositionTakenException(positionX, positionY);
+        }
+
+        final QueenPawn pawn = new QueenPawn(positionX,
+                                             positionY,
+                                             boardSize);
         queenPawns.put(0, pawn);
     }
 
     public void addPawn(final int positionX,
                         final int positionY) {
         if (queenPawns.size() >= boardSize) {
-            throw new TooManyQueensException(boardSize - 1);
+            throw new TooManyQueensException(boardSize);
         }
+
+        if (isPositionTaken(positionX, positionY)) {
+            throw new PositionTakenException(positionX, positionY);
+        }
+
         final QueenPawn pawn = new QueenPawn(positionX,
                                             positionY);
         queenPawns.put(queenPawns.size(), pawn);
@@ -50,10 +59,6 @@ public class ChessBoard {
 
         queenPawns.get(key).setPositionX(positionX);
         queenPawns.get(key).setPositionY(positionY);
-    }
-
-    public int count() {
-        return 0;
     }
 
     private boolean isPositionTaken(final int positionX,

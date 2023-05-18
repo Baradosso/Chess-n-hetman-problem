@@ -1,6 +1,4 @@
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,9 +9,7 @@ public class FileManager {
         final ChessBoard chessBoard = new ChessBoard();
         final Map<Integer, QueenPawn> queenPawns = new HashMap<>();
 
-        try {
-            final Scanner scanner = new Scanner(new File(path));
-
+        try (final Scanner scanner = new Scanner(new File(path))) {
             if (scanner.hasNextLine()) {
                 final String data = scanner.nextLine();
                 chessBoard.setBoardSize(Integer.parseInt(data));
@@ -36,15 +32,16 @@ public class FileManager {
     }
 
     public static void saveDataToFile(final int boardSize,
-                               final Map<Integer, QueenPawn> queenPawns,
-                               final String path) {
-        try (final FileWriter fileWriter = new FileWriter(path)) {
-            fileWriter.write(boardSize);
+                                      final Map<Integer, QueenPawn> queenPawns,
+                                      final String path) {
+        try (final BufferedWriter bufferedReader = new BufferedWriter(new FileWriter(path))) {
+
+            bufferedReader.write(boardSize + System.lineSeparator());
             for (final int key : queenPawns.keySet()) {
                 final QueenPawn queenPawn = queenPawns.get(key);
-                fileWriter.write(fileDataSet(key,
-                                             queenPawn.getPositionX(),
-                                             queenPawn.getPositionY()));
+                bufferedReader.write(fileDataSet(key,
+                                                 queenPawn.getPositionX(),
+                                                 queenPawn.getPositionY()));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,6 +51,10 @@ public class FileManager {
     private static String fileDataSet(final int key,
                                final int positionX,
                                final int positionY) {
-        return MessageFormat.format("{0};{1};{2}", key, positionX, positionY);
+        return MessageFormat.format("{0};{1};{2}{3}",
+                                    key,
+                                    positionX,
+                                    positionY,
+                                    System.lineSeparator());
     }
 }
