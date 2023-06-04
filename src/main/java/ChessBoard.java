@@ -20,7 +20,7 @@ public class ChessBoard {
     }
 
     public void setInitialPawn(final int positionX,
-                               final int positionY) {
+                               int positionY) {
         if (isPositionTaken(positionX, positionY)) {
             throw new PositionTakenException(positionX, positionY);
         }

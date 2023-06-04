@@ -1,6 +1,8 @@
 import exceptions.OutOfBoundsException;
 import lombok.Getter;
 
+import java.util.Objects;
+
 public class QueenPawn {
     private static int BOARD_SIZE;
     @Getter
@@ -91,5 +93,18 @@ public class QueenPawn {
             diagonalPositionY--;
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof QueenPawn queenPawn)) return false;
+        return positionX == queenPawn.positionX &&
+               positionY == queenPawn.positionY;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(positionX, positionY);
     }
 }
