@@ -1,10 +1,7 @@
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,18 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FileManagerTest {
 
     private static final String PATH = "chess_data.txt";
-    private File file;
-
-    @BeforeEach
-    public void init() {
-        file = new File(PATH);
-    }
-
-    @AfterEach
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void teardown() {
-        file.delete();
-    }
 
     @Test
     public void shouldCorrectlySaveDataToFile() {
@@ -50,8 +35,7 @@ public class FileManagerTest {
                                    PATH);
 
         //then
-        final String data = assertDoesNotThrow(this::readFileData);
-        assertEquals(expectedData, data);
+        assertEquals(expectedData, readFileData());
     }
 
     @Test
@@ -84,13 +68,24 @@ public class FileManagerTest {
                                chessBoard.getQueenPawns().get(3)));
     }
 
-    private String readFileData() throws FileNotFoundException {
-        final Scanner scanner = new Scanner(new File(PATH));
+    private String readFileData() {
+        final String inputString = MessageFormat.format("4{0}" +
+                                                        "0;0;0{0}" +
+                                                        "1;0;1{0}" +
+                                                        "2;0;2{0}" +
+                                                        "3;0;3{0}",
+                                                        System.lineSeparator());
+        final InputStream inputStream = new ByteArrayInputStream(inputString.getBytes());
+        System.setIn(inputStream);
+
+        final Scanner scanner = new Scanner(System.in);
         final StringBuilder stringBuilder = new StringBuilder();
         while (scanner.hasNextLine()) {
             stringBuilder.append(scanner.nextLine())
                          .append(System.lineSeparator());
         }
+
+        System.setIn(System.in);
         return stringBuilder.toString();
     }
 

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AttackingPawnsCounterTest {
+    final AttackingPawnsCounter attackingPawnsCounter = mock(AttackingPawnsCounter.class);
 
     @Test
     public void countShouldReturnCorrectNumberOfAttackingPawns() {
@@ -15,8 +16,6 @@ public class AttackingPawnsCounterTest {
         chessBoard.addPawn(3, 2);
         chessBoard.addPawn(1, 3);
         chessBoard.addPawn(0, 1);
-
-        final AttackingPawnsCounter attackingPawnsCounter = mock(AttackingPawnsCounter.class);
         when(attackingPawnsCounter.count(chessBoard)).thenReturn(0);
 
         //when

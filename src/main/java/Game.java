@@ -43,7 +43,13 @@ public class Game {
                                            customScanner.getStringInput());
             }
 
+            if (attackingPawnsCounter.count(chessBoard) == 0) {
+                System.out.println("YOU WON");
+                break;
+            }
+
             if (customScanner.getIntInput() == 1) {
+                System.out.println("GAME ENDED");
                 break;
             }
 
